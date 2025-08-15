@@ -1,0 +1,20 @@
+Erros encontrados durante o projeto e que podem servir de exemplo
+
+Traceback (most recent call last):
+  File "\Projeto_JornadaDeDados\Pipeline_SQL", line 21, in <module>
+    engine = create_engine(DATABASE_URL)
+  File "<string>", line 2, in create_engine
+  File "\venv\Lib\site-packages\sqlalchemy\util\deprecations.py", line 281, in warned
+    return fn(*args, **kwargs)  # type: ignore[no-any-return]
+  File "\venv\Lib\site-packages\sqlalchemy\engine\create.py", line 564, in create_engine
+    u = _url.make_url(url)
+  File "\venv\Lib\site-packages\sqlalchemy\engine\url.py", line 856, in make_url
+    return _parse_url(name_or_url)
+  File "\venv\Lib\site-packages\sqlalchemy\engine\url.py", line 917, in _parse_url
+    components["port"] = int(components["port"])
+                         ~~~^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: 'None'
+
+Erro ao rodar Pipeline_SQL
+
+Troubleshooting e resolução:

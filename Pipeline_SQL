@@ -1,0 +1,44 @@
+import time
+import pandas as pd
+import os
+from sqlalchemy import create_engine
+from GetBitcoin import get_bitcoin_df
+from GetCommodities import get_commodities_df
+from dotenv import load_dotenv 
+
+# Carregar variáveis no .env
+load_dotenv()
+
+# Conexões do Banco de Dados
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
+
+# Conexão com SQL Alchemy
+DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}" 
+engine = create_engine(DATABASE_URL)
+
+# Config Timer da Pipeline 
+SLEEP_SECONDS = 10
+
+# Pipeline
+if __name__ == "__main__":
+    while True:
+        
+        #Coleta
+        df_btc = get_bitcoin_df()
+        df_comm = get_commodities_df()
+
+        # Concatenar dados
+        df = pd.concat([df_btc, df_comm], ignore_index=True)
+
+        # Salvar no Banco de Dados
+        df.to_sql("cotacoes", engine, if_exists="append", index=False)
+
+        # Retorno de sucesso da Pipeline
+        print("Cotações inseridas no banco de dados com sucesso")
+
+        # Espera pelo próximo ciclo para rodar a Pipe
+        time.sleep(SLEEP_SECONDS)
